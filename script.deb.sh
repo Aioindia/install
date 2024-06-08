@@ -60,12 +60,12 @@ detect_os ()
   if [[ ( -z "${os}" ) && ( -z "${dist}" ) ]]; then
     # some systems dont have lsb-release yet have the lsb_release binary and
     # vice-versa
-    if [ -e /etc/lsb-release ]; then
-      . /etc/lsb-release
+    if [ -e /home/etc/lsb-release ]; then
+      . /home/etc/lsb-release
 
       if [ "${ID}" = "raspbian" ]; then
         os=${ID}
-        dist=`cut --delimiter='.' -f1 /etc/debian_version`
+        dist=`cut --delimiter='.' -f1 /home/etc/debian_version`
       else
         os=${DISTRIB_ID}
         dist=${DISTRIB_CODENAME}
@@ -79,14 +79,14 @@ detect_os ()
       dist=`lsb_release -c | cut -f2`
       os=`lsb_release -i | cut -f2 | awk '{ print tolower($1) }'`
 
-    elif [ -e /etc/debian_version ]; then
-      # some Debians have jessie/sid in their /etc/debian_version
+    elif [ -e /home/etc/debian_version ]; then
+      # some Debians have jessie/sid in their /home/etc/debian_version
       # while others have '6.0.7'
-      os=`cat /etc/issue | head -1 | awk '{ print tolower($1) }'`
-      if grep -q '/' /etc/debian_version; then
-        dist=`cut --delimiter='/' -f1 /etc/debian_version`
+      os=`cat /home/etc/issue | head -1 | awk '{ print tolower($1) }'`
+      if grep -q '/' /home/etc/debian_version; then
+        dist=`cut --delimiter='/' -f1 /home/etc/debian_version`
       else
-        dist=`cut --delimiter='.' -f1 /etc/debian_version`
+        dist=`cut --delimiter='.' -f1 /home/etc/debian_version`
       fi
 
     else
